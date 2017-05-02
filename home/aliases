@@ -1,0 +1,124 @@
+#
+# ~/.bash_aliases
+#
+# vim: set filetype=sh:
+
+# David J Galvan Jr
+# Created:          Thu 28 Jul 2011 09:38:47 PM EST
+# Modified:         Wed 26 Apr 2017 10:02:19 PM EDT
+
+#-----------------------------------------------------------------------------#
+# directory shortcuts
+#-----------------------------------------------------------------------------#
+david=/home/david
+videos=${david}/Videos
+BLOGDIR=/var/run/media/david/speedfs/david/blog
+
+###############################################################################
+# Aliases #####################################################################
+
+#-----------------------------------------------------------------------------#
+# general
+#-----------------------------------------------------------------------------#
+# alias su='sudo su'
+# alias pacman='pacman-color'
+# alias powerpill='powerpill-light'
+# alias ping='ping -vc3'
+alias ce='crontab -e'
+alias v='vim'
+alias vl='/usr/share/vim/vim73/macros/less.sh'
+alias diff='colordiff'
+alias cp='cp --interactive --verbose'
+alias mv='mv --interactive --verbose'
+alias rm='rm -I --verbose'
+alias ln='ln --interactive'
+alias grep='grep --color=auto'
+alias mkdir='mkdir --parents --verbose'
+alias xrdb-merge='xrdb -merge ~/.Xresources && exit'
+alias mm='morc_menu'
+alias lock='blurlock && sleep 10; xset dpms force off'
+alias make50='make CC=clang CFLAGS="-ggdb3 -O0 -std=c11 -Wall -Werror -Wshadow" LDLIBS="-lcs50 -lm"'
+# print external IP Adress using lynx
+alias myip='lynx --dump http://whatismyip.org'
+alias web='lynx -vikeys https://www.google.com'
+
+#-----------------------------------------------------------------------------#
+# moving up directory levels
+#-----------------------------------------------------------------------------#
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+#-----------------------------------------------------------------------------#
+# ls aliases
+#-----------------------------------------------------------------------------#
+
+# ls colors 
+alias ls='ls --human-readable --indicator-style=slash --classify --color=auto'
+
+alias ldir='ls -lhA |grep ^d'   # List directories
+alias lfiles='ls -lhA |grep ^-' # List files
+
+alias ll='ls -l'                # List files and directories in long format
+alias la='ls -A'                # List all files and directories (inc. hidden)
+alias lla='ls -lA'              # List all (inc. hidden) in long format
+alias lx='ls -lBX'              # Sort by extension
+alias lz=' ls -lrS '            # Sort by size
+alias lt='ls -lrt'              # Sort by date
+
+alias ldu='ls -l /dev/disk/by-uuid'  # List all disk/partitions by uuid
+alias ldl='ls -l /dev/disk/by-label' # List all disk/partitions by label
+
+#-----------------------------------------------------------------------------#
+# search aliases
+#-----------------------------------------------------------------------------#
+alias lss='ls -lARt | grep $1'                      # ls search recursively
+alias pss='ps -ef | grep -v grep | grep $1'         # processes search
+alias vfind='find -L ${videos} -iname ${1}'
+
+#-----------------------------------------------------------------------------#
+# aria2c aliases
+#-----------------------------------------------------------------------------#
+alias aria='aria2c --max-connection-per-server=4 --allow-overwrite=true \
+    --file-allocation=falloc --log-level=error --summary-interval=120'
+
+#-----------------------------------------------------------------------------#
+# aliases to edit dotfiles --makes for easy v[tab][tab] of my favs
+#-----------------------------------------------------------------------------#
+alias vjournal='v $BLOGDIR/journal/$(date +%Y%m%d).md'
+alias vbashrc="v ~/.bashrc"
+alias valiases="v ${david}/.bash_aliases"
+alias vfunctions="v ${david}/.bash_functions"
+alias vvimrc="v ~/.vim/vimrc"
+alias vpentadactylrc="v ${david}/.pentadactylrc"
+alias vpentadactylshortcuts="v ${david}/.pentadactyl_shortcuts"
+alias vxresources="v ${david}/.Xresources"
+alias vxinitrc="v ${david}/.xinitrc"
+alias vobautostart="v ${david}/.config/openbox/autostart"
+alias vobrcxml="v ${david}/.config/openbox/rc.xml"
+alias vtmuxconf="v ${david}/.tmux.conf"
+alias vrtorrentrc="v ${david}/.rtorrent.rc"
+alias vpglcmdconf="v /etc/pgl/pglcmd.conf"
+alias vfstab="v /etc/fstab"
+alias vrcconf="v /etc/rc.conf"
+alias vrclocal="v /etc/rc.local"
+alias vawesome="v ${david}/.config/awesome/rc.lua"
+
+#-----------------------------------------------------------------------------#
+# virtualbox aliases
+#-----------------------------------------------------------------------------#
+alias startWindows7='VBoxHeadless --startvm Windows7 &> /dev/null &'
+alias stopWindows7='VBoxManage controlvm Windows7 acpipowerbutton'
+
+#-----------------------------------------------------------------------------#
+# log viewing
+#-----------------------------------------------------------------------------#
+alias log-pgl='less +F /var/log/pgl/pgld.log'
+alias log-everything='less +F /var/log/everything.log'
+alias log-messages='less +F /var/log/messages.log'
+alias log-crond='less +F /var/log/crond.log'
+alias log-xorg='less +F /var/log/Xorg.0.log'
+alias log-auth='less +F /var/log/auth.log'
+
+###############################################################################
