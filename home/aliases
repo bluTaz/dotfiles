@@ -5,7 +5,7 @@
 
 # David J Galvan Jr
 # Created:          Thu 28 Jul 2011 09:38:47 PM EST
-# Modified:         Wed 26 Apr 2017 10:02:19 PM EDT
+# Modified:         Sun 01 Oct 2017 06:11:26 PM DST
 
 #-----------------------------------------------------------------------------#
 # directory shortcuts
@@ -25,7 +25,7 @@ BLOGDIR=/var/run/media/david/speedfs/david/blog
 # alias powerpill='powerpill-light'
 # alias ping='ping -vc3'
 alias ce='crontab -e'
-alias v='vim'
+alias v='$EDITOR'
 alias vl='/usr/share/vim/vim73/macros/less.sh'
 alias diff='colordiff'
 alias cp='cp --interactive --verbose'
@@ -86,24 +86,24 @@ alias aria='aria2c --max-connection-per-server=4 --allow-overwrite=true \
 #-----------------------------------------------------------------------------#
 # aliases to edit dotfiles --makes for easy v[tab][tab] of my favs
 #-----------------------------------------------------------------------------#
-alias vjournal='v $BLOGDIR/journal/$(date +%Y%m%d).md'
-alias vbashrc="v ~/.bashrc"
-alias valiases="v ${david}/.bash_aliases"
-alias vfunctions="v ${david}/.bash_functions"
-alias vvimrc="v ~/.vim/vimrc"
-alias vpentadactylrc="v ${david}/.pentadactylrc"
-alias vpentadactylshortcuts="v ${david}/.pentadactyl_shortcuts"
-alias vxresources="v ${david}/.Xresources"
-alias vxinitrc="v ${david}/.xinitrc"
-alias vobautostart="v ${david}/.config/openbox/autostart"
-alias vobrcxml="v ${david}/.config/openbox/rc.xml"
-alias vtmuxconf="v ${david}/.tmux.conf"
-alias vrtorrentrc="v ${david}/.rtorrent.rc"
-alias vpglcmdconf="v /etc/pgl/pglcmd.conf"
-alias vfstab="v /etc/fstab"
-alias vrcconf="v /etc/rc.conf"
-alias vrclocal="v /etc/rc.local"
-alias vawesome="v ${david}/.config/awesome/rc.lua"
+alias vjournal="$EDITOR $BLOGDIR/journal/$(date +%Y%m%d).md"
+alias vbashrc="$EDITOR ~/.bashrc"
+alias valiases="$EDITOR ${david}/.aliases"
+alias vfunctions="$EDITOR ${david}/.bash_functions"
+alias vvimrc="$EDITOR ~/.vim/vimrc"
+alias vpentadactylrc="$EDITOR ${david}/.pentadactylrc"
+alias vpentadactylshortcuts="$EDITOR ${david}/.pentadactyl_shortcuts"
+alias vxresources="$EDITOR ${david}/.Xresources"
+alias vxinitrc="$EDITOR ${david}/.xinitrc"
+alias vobautostart="$EDITOR ${david}/.config/openbox/autostart"
+alias vobrcxml="$EDITOR ${david}/.config/openbox/rc.xml"
+alias vtmuxconf="$EDITOR ${david}/.tmux.conf"
+alias vrtorrentrc="$EDITOR ${david}/.rtorrent.rc"
+alias vpglcmdconf="$EDITOR /etc/pgl/pglcmd.conf"
+alias vfstab="$EDITOR /etc/fstab"
+alias vrcconf="$EDITOR /etc/rc.conf"
+alias vrclocal="$EDITOR /etc/rc.local"
+alias vawesome="$EDITOR ${david}/.config/awesome/rc.lua"
 
 #-----------------------------------------------------------------------------#
 # virtualbox aliases
