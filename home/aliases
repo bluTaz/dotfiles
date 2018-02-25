@@ -1,4 +1,4 @@
-#
+#!/bin/bash
 # ~/.bash_aliases
 #
 # vim: set filetype=sh:
@@ -6,13 +6,11 @@
 # David J Galvan Jr
 # Created:          Thu 28 Jul 2011 09:38:47 PM EST
 # Modified:         Sun 01 Oct 2017 06:11:26 PM DST
+# Last modified:    Wed Feb 21 13:50:40 2018
 
 #-----------------------------------------------------------------------------#
 # directory shortcuts
 #-----------------------------------------------------------------------------#
-david=/home/david
-videos=${david}/Videos
-BLOGDIR=/var/run/media/david/speedfs/david/blog
 
 ###############################################################################
 # Aliases #####################################################################
@@ -20,12 +18,8 @@ BLOGDIR=/var/run/media/david/speedfs/david/blog
 #-----------------------------------------------------------------------------#
 # general
 #-----------------------------------------------------------------------------#
-# alias su='sudo su'
-# alias pacman='pacman-color'
-# alias powerpill='powerpill-light'
-# alias ping='ping -vc3'
 alias ce='crontab -e'
-alias v='$EDITOR'
+alias v='$EDITOR -n'
 alias vl='/usr/share/vim/vim73/macros/less.sh'
 alias diff='colordiff'
 alias cp='cp --interactive --verbose'
@@ -75,7 +69,6 @@ alias ldl='ls -l /dev/disk/by-label' # List all disk/partitions by label
 #-----------------------------------------------------------------------------#
 alias lss='ls -lARt | grep $1'                      # ls search recursively
 alias pss='ps -ef | grep -v grep | grep $1'         # processes search
-alias vfind='find -L ${videos} -iname ${1}'
 
 #-----------------------------------------------------------------------------#
 # aria2c aliases
@@ -86,30 +79,16 @@ alias aria='aria2c --max-connection-per-server=4 --allow-overwrite=true \
 #-----------------------------------------------------------------------------#
 # aliases to edit dotfiles --makes for easy v[tab][tab] of my favs
 #-----------------------------------------------------------------------------#
-alias vjournal="$EDITOR $BLOGDIR/journal/$(date +%Y%m%d).md"
-alias vbashrc="$EDITOR ~/.bashrc"
-alias valiases="$EDITOR ${david}/.aliases"
-alias vfunctions="$EDITOR ${david}/.bash_functions"
-alias vvimrc="$EDITOR ~/.vim/vimrc"
-alias vpentadactylrc="$EDITOR ${david}/.pentadactylrc"
-alias vpentadactylshortcuts="$EDITOR ${david}/.pentadactyl_shortcuts"
-alias vxresources="$EDITOR ${david}/.Xresources"
-alias vxinitrc="$EDITOR ${david}/.xinitrc"
-alias vobautostart="$EDITOR ${david}/.config/openbox/autostart"
-alias vobrcxml="$EDITOR ${david}/.config/openbox/rc.xml"
-alias vtmuxconf="$EDITOR ${david}/.tmux.conf"
-alias vrtorrentrc="$EDITOR ${david}/.rtorrent.rc"
-alias vpglcmdconf="$EDITOR /etc/pgl/pglcmd.conf"
-alias vfstab="$EDITOR /etc/fstab"
-alias vrcconf="$EDITOR /etc/rc.conf"
-alias vrclocal="$EDITOR /etc/rc.local"
-alias vawesome="$EDITOR ${david}/.config/awesome/rc.lua"
-
-#-----------------------------------------------------------------------------#
-# virtualbox aliases
-#-----------------------------------------------------------------------------#
-alias startWindows7='VBoxHeadless --startvm Windows7 &> /dev/null &'
-alias stopWindows7='VBoxManage controlvm Windows7 acpipowerbutton'
+alias vbashrc="$EDITOR -n ~/.bashrc"
+alias valiases="$EDITOR -n ~/.aliases"
+alias vfunctions="$EDITOR -n ~/.bash_functions"
+alias vvimrc="$EDITOR -n ~/.vim/vimrc"
+alias vxresources="$EDITOR -n ~/.Xresources"
+alias vxinitrc="$EDITOR -n ~/.xinitrc"
+alias vtmuxconf="$EDITOR -n ~/.tmux.conf"
+alias vrtorrentrc="$EDITOR -n ~/.rtorrent.rc"
+alias vpglcmdconf="$EDITOR -n /etc/pgl/pglcmd.conf"
+alias vawesome="$EDITOR -n ~/.config/awesome/rc.lua"
 
 #-----------------------------------------------------------------------------#
 # log viewing
@@ -122,3 +101,16 @@ alias log-xorg='less +F /var/log/Xorg.0.log'
 alias log-auth='less +F /var/log/auth.log'
 
 ###############################################################################
+# Functions
+###############################################################################
+ranger() {
+    if [ -z "$RANGER_LEVEL" ]; then
+        ranger-cd "$@"
+    else
+        exit
+    fi
+}
+
+# Local Variables:
+# mode:zsh
+# End:

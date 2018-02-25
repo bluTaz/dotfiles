@@ -34,7 +34,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-
+     html
       vimscript
       helm
       auto-completion
@@ -46,29 +46,28 @@ values."
       yaml
       bibtex
       org
-      spell-checking
+      ranger
+      ;; spell-checking
       syntax-checking
       evil-commentary
-      nlinum
       (version-control :variables
-                        version-control-global-margin t
-                        version-control-diff-tool 'diff-hl
+                        ;; version-control-global-margin t
+                        version-control-diff-tool 'git-gutter
       )
       (shell :variables
               shell-default-height 30
               shell-default-position 'bottom
       )
-
     )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(base16-theme)
+   dotspacemacs-additional-packages '(base16-theme printing google-this)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(org-bullets)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -76,7 +75,9 @@ values."
    ;; `used-but-keep-unused' installs only the used packages but won't uninstall
    ;; them if they become unused. `all' installs *all* packages supported by
    ;; Spacemacs and never uninstall them. (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+   dotspacemacs-install-packages 'used-only
+  )
+)
 
 "------------------------------------------------------------------------------"
 (defun dotspacemacs/init ()
@@ -142,13 +143,14 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(base16-default-dark
+   dotspacemacs-themes '(base16-tomorrow-night
+                         base16-default-dark
                          base16-default-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Meslo LG S Regular for Powerline"
+   dotspacemacs-default-font '("Source Code Pro Medium"
                                :size 13
                                :weight normal
                                :width normal
@@ -275,7 +277,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers 'relative
+   dotspacemacs-line-numbers 't
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -307,7 +309,8 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
-   ))
+  )
+)
 
 "------------------------------------------------------------------------------"
 (defun dotspacemacs/user-init ()
@@ -322,11 +325,53 @@ before packages are loaded. If you are unsure, you should try in setting them in
 ;;
   (add-hook 'prog-mode-hook 'turn-on-fci-mode)
   (add-hook 'text-mode-hook 'turn-on-fci-mode)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'markdown-mode-hook 'turn-on-auto-fill)
+  (add-hook 'markdown-mode-hook 'turn-on-fci-mode)
+  (add-hook 'markdown-mode-hook '(lambda() (set-fill-column 80)))
+  (add-hook 'org-mode-hook 'turn-on-fci-mode)
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (add-hook 'org-mode-hook 'turn-on-smartparens-mode)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   (add-hook 'after-init-hook 'global-diff-hl-mode)
   (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
-  (diff-hl-flydiff-mode 1)
+  (git-gutter:linum-setup)
+  (setenv "GS_LIB" "c:/Program Files/gs/gs9.22/lib")
+  (setq ps-font-size 9.0
+        ps-font-family Times
+        ps-header-font-size 8.0
+        ps-header-title-font-size 8.0
+        ps-show-n-of-n nil
+        ps-paragraph-spacing 0.5
+        pinter-name "\\METIS-JUPITER\mp620"
+        ps-multibyte-buffer :bdf-font-except-latin
+        bdf-directory-list "c:/tools/emacs/fonts/bdf"
+        ps-lpr-command "c:/Program Files/gs/gs9.22/bin/gswin64c.exe"
+        ps-lpr-switches '("-q" "-dNOPAUSE" "-dBATCH" "-sDEVICE=mswinpr2")
+        ps-printer-name nil
+        doc-view-ghostscript-program "c:/Program Files/Artifex Software/gsview6.0/bin/gsview.exe"
+        initial-frame-alist '((top . 0) (left . 0) (width . 240) (height . 25))
+        (with-eval-after-load 'org
+          org-modules '(org-info org-gnus org-docview org-bibtex org-w3m org-bullets)
+          org-directory "~/Documents/Notes"
+          org-startup-indented t
+          org-src-fontify-natively t
+        )
   )
+  ;; (fset 'definition
+  ;;       [escape ?o ?* ?* ?: left left])
+  (fset 'definition
+        [escape ?o ?* right ?: left left])
+  (evil-define-key 'insert org-mode-map (kbd "C-;") 'definition)
+  (global-set-key (kbd "C-c d") 'define-word-at-point)
+  (global-set-key (kbd "C-x g") 'google-this-mode-submap)
+  (global-set-key (kbd "<right>") 'next-buffer)
+  (global-set-key (kbd "<left>") 'previous-buffer)
+  (pr-update-menus)
+  (custom-set-variables
+   '(server-done-hook (quote ((lambda nil (killbuffer nil)) delete-frame)))
+   '(server-switch-hook (quote ((lambda nil (let (server-buf) (setq server-buf (current-buffer)) (bury-buffer) (switch-to-buffer-other-frame server-buf)))))))
+)
 
 "------------------------------------------------------------------------------"
 (defun dotspacemacs/user-config ()
@@ -339,43 +384,45 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 ;;
-  (define-globalized-minor-mode global-fci-mode (lambda () (fci-mode 1)))
-  (global-fci-mode 1)
-  ;;
+dotspacemacs-line-numbers 't
   (setq-default
     fill-column 80
-    ;; linum-format "%3d \u2502"
-    ;; linum-format "%3d \u2502"
-    diff-hl-margin-side 'right
+    linum-format " %4d "
   )
-  (setq
-    base16-theme-256-color-source "colors"
-    vc-follow-symlinks t
-    org-modules '(org-bibtex org-bbdb org-docview org-gnus org-info org-w3m)
-    org-directory "~/Documents/Notes"
-    org-log-done 'time
-    org-startup-indented t
-    org-default-notes-file (concat org-directory "/notes.org")
-  )
-  (load-theme 'base16-default-dark t)
+  (setq base16-theme-256-color-source "colors")
+  (setq vc-follow-symlinks t)
 )
 
-"------------------------------------------------------------------------------"
-
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#1d1f21" "#cc6666" "#b5bd68" "#f0c674" "#81a2be" "#b294bb" "#81a2be" "#c5c8c6"])
+ '(ansi-term-color-vector
+   [unspecified "#1d1f21" "#cc6666" "#b5bd68" "#f0c674" "#81a2be" "#b294bb" "#81a2be" "#c5c8c6"] t)
+ '(custom-safe-themes
+   (quote
+    ("3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(git-gutter:added-sign "++")
+ '(git-gutter:deleted-sign "--")
+ '(git-gutter:modified-sign "!!")
+ '(org-hide-emphasis-markers t)
+ '(org-hide-leading-stars t)
  '(package-selected-packages
    (quote
-    (yaml-mode xterm-color shell-pop nlinum-relative nlinum multi-term magit-gh-pulls github-search github-clone github-browse-file gist gh marshal logito pcache ht flyspell-correct-helm flyspell-correct eshell-z eshell-prompt-extras esh-help auto-dictionary helm-gitignore helm-company helm-c-yasnippet vimrc-mode dactyl-mode org-ref pdf-tools key-chord tablist helm-bibtex parsebib biblio biblio-core git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter evil-commentary diff-hl org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mmm-mode markdown-toc markdown-mode htmlize gnuplot gh-md unfill mwim smeargle orgit magit-gitflow gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor company-statistics company base16-theme auto-yasnippet yasnippet ac-ispell auto-complete helm-themes helm-swoop helm-projectile helm-mode-manager helm-flx helm-descbinds helm-ag ace-jump-helm-line ws-butler winum which-key wgrep volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline smex restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint ivy-hydra info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-make google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word counsel-projectile column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link))))
+    (ranger google-this powerline spinner org-plus-contrib hydra parent-mode projectile request pkg-info epl flx smartparens iedit anzu evil goto-chg undo-tree highlight f s diminish bind-map bind-key dash packed helm avy helm-core async popup web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data pdf-tools key-chord ivy tablist org-category-capture alert log4e gntp markdown-mode helm-bibtex parsebib gitignore-mode fringe-helper git-gutter+ git-gutter gh marshal logito pcache ht pos-tip flycheck magit magit-popup git-commit with-editor company biblio biblio-core yasnippet auto-complete wgrep smex ivy-hydra evil-nerd-commenter counsel-projectile counsel swiper yaml-mode xterm-color ws-butler winum which-key volatile-highlights vimrc-mode vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle shell-pop restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-ref org-projectile org-present org-pomodoro org-download org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-commentary evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav dumb-jump diff-hl define-word dactyl-mode company-statistics column-enforce-mode clean-aindent-mode base16-theme auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+
+"------------------------------------------------------------------------------"
+
+;; Do not write anything past this comment. This is where Emacs will
+;; auto-generate custom variable definitions.
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(italic ((t (:slant italic :family "Source Code Pro Medium")))))
