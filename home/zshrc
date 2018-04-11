@@ -160,10 +160,10 @@ POWERLEVEL9K_VI_MODE_NORMAL_BACKGROUND='196'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-if [ -z "$(pgrep ssh-agent)" ]; then
-    rm -rf /tmp/ssh-*
-    eval $(ssh-agent -s) > /dev/null
-else
-    export SSH_AGENT_PID=$(pgrep ssh-agent)
-    export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name agent.*)
-fi
+# if [ -z "$(pgrep ssh-agent)" ]; then
+#     rm -rf /tmp/ssh-*
+#     eval $(ssh-agent -s) > /dev/null
+# else
+#     export SSH_AGENT_PID=$(pgrep ssh-agent)
+#     export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name agent.*)
+# fi
