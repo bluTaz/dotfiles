@@ -4,6 +4,3 @@
 [submodule "home/vim"]
 	path = home/vim
 	url = https://github.com/bluTaz/vimfiles
-[submodule "home/oh-my-zsh"]
-	path = home/oh-my-zsh
-	url = git@github.com:djgalvan/oh-my-zsh.git
