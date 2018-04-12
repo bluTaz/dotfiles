@@ -11,12 +11,12 @@ setopt HIST_BEEP
 
 # script variables
 
-RANGER_CD=$HOME/bin/bash_automatic_cd.sh
-[ -f $RANGER_CD ] && source $RANGER_CD
+# RANGER_CD=$HOME/bin/bash_automatic_cd.sh
+# [ -f $RANGER_CD ] && source $RANGER_CD
 
 # Global Variables
 # VARIABLES in ~/.pam_environment
-# export EDITOR=$HOME/bin/edit
+export EDITOR=nvim
 # export HOSTNAME=$HOST
 # export DEFAULT_USER="david"
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
