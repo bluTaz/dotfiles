@@ -42,9 +42,9 @@ export DISPLAY=:0.0
 #  fi
 
 # Start zsh
-if [ -t 1 ]; then  
-  exec zsh
-fi  
+# if [ -t 1 ]; then  
+#   exec zsh
+# fi  
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
